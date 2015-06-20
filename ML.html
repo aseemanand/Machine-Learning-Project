@@ -82,8 +82,7 @@ library(caret)</code></pre>
 ## Type rfNews() to see new features/changes/bug fixes.</code></pre>
 <pre class="r"><code>library(e1071)</code></pre>
 <pre><code>## Warning: package 'e1071' was built under R version 3.2.1</code></pre>
-<pre class="r"><code>library(ggplot2)
-set.seed(9999)
+<pre class="r"><code>set.seed(9999)
 
 # Training Data - Identifying &quot;NA&quot;, &quot;&quot; and &quot;#DIV/0!&quot; as NA strings while reading the data
 training &lt;- read.csv(&quot;pml-training.csv&quot;,na.strings=c(&quot;NA&quot;,&quot;&quot;,&quot;#DIV/0!&quot;))

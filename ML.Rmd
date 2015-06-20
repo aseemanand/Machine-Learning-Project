@@ -1,7 +1,7 @@
 ---
 title: "Machine Learning Project"
-date: "Thursday, June 18, 2015"
 output: html_document
+date: "Thursday, June 18, 2015"
 ---
 ## Introduction
 
@@ -16,7 +16,6 @@ The goal of project is to predict the manner in which device users did the exerc
 library(caret)
 library(randomForest)
 library(e1071)
-library(ggplot2)
 set.seed(9999)
 
 # Training Data - Identifying "NA", "" and "#DIV/0!" as NA strings while reading the data
