@@ -5,9 +5,14 @@ date: "Thursday, June 18, 2015"
 ---
 ## Introduction
 
-Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. 
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. The 5 possible methods include -
+* A: exactly according to the specification 
+* B: throwing the elbows to the front
+* C: lifting the dumbbell only halfway 
+* D: lowering the dumbbell only halfway
+* E: throwing the hips to the front
 
-The goal of project is to predict the manner in which device users did the exercise.
+The goal of project is to predict the manner in which device users did the exercise. This is represented by "classe" variable in the training set.
 
 ## Reading, Cleaning and Preprocessing Data 
 ```{r}
@@ -28,7 +33,7 @@ testing <- read.csv("pml-testing.csv",na.strings=c("NA","","#DIV/0!"))
 training <-training[,colSums(is.na(training))== 0]
 testing  <-testing[,colSums(is.na(testing)) == 0]
 
-# Some variables are not required for the current project - user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7) so deleting these variables.
+# Some variables are not required for the current project - user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7) so removing these variables.
 
 training <- training[,-c(1:7)]
 testing <- testing[,-c(1:7)]
@@ -39,7 +44,7 @@ trainSet <- createDataPartition(y = training$classe, p = 0.7, list = FALSE)
 trainData <- training[trainSet,]
 validData <- training[-trainSet,]
 ```
-## Training the Model
+## Training and Building the Model
 
 We will apply 3 different learning methods Classification tree, Gradient boosting (gbm) and Random forest models.
 
@@ -62,7 +67,7 @@ GBpredict <- predict(GBmodel, validData)
 confusionMatrix(GBpredict, validData$classe)
 
 # Random Forest Model
-RFmodel <- randomForest(classe ~. , method="class", data=trainData)
+RFmodel <- randomForest(classe ~. , method="class", data=trainData, importance=TRUE)
 
 RFpredict <- predict(RFmodel, validData, type = "class")
 
@@ -74,6 +79,15 @@ confusionMatrix(RFpredict, validData$classe)
 1. Random Forest model performed better than classification Trees and Gradient Boosting (GBM).
 2. Random Forest model has accuracy of 99.3% compared to 95.9% for GBM and classification Tree for 49.7%. 
 3. Expected out-of-sample error (1 - accuracy) is estimated at 0.6% for Random Forest.
+
+## Finding the importance of variables in Random Forest Model
+
+```{r}
+print("Importance of variable in the Random Forest model")
+varImpPlot(RFmodel)
+```
+
+As per Variable Importance Charts, yaw_belt and roll_belt are 2 important predictors for the model obtained with random forest and tuned by cross validation.
 
 ## Predicting 20 test cases 
 
