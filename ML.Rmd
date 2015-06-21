@@ -1,6 +1,6 @@
 ---
 title: "Machine Learning Project"
-output: html_document
+output: word_document
 date: "Thursday, June 18, 2015"
 ---
 ## Introduction
